@@ -38,23 +38,23 @@ def clean_folders():
 
 # Ana program
 print("Fotoğraf Düzenleyici")
-print("1 - Fotoğrafları Düzenle")
+print("1 - Fotoğraflari Düzenle")
 print("2 - Klasörleri Temizle")
-print("3 - Çıkış")
+print("3 - Çikiş")
 
 while True:
     choice = input("Seçiminiz: ")
     
     if choice == "1":
         organize_photos()
-        print("Düzenleme tamamlandı!")
+        print("Düzenleme tamamlandi!")
     
     elif choice == "2":
         clean_folders()
-        print("Temizlik tamamlandı!")
+        print("Temizlik tamamlandi!")
     
     elif choice == "3":
-        print("Program kapatılıyor...")
+        print("Program kapatiliyor...")
         break
     
     else:
