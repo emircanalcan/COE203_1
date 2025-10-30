@@ -2,38 +2,71 @@ import time  # Zaman gecikmesi için gerekli modül
 
 print("=== Smart File Download Manager Automation ===")  # Program başlığı
 
-# Otomasyon sistemi tarafından indirilecek dosyalar listesi (isim, boyut MB)
-files = [("game.zip", 200), ("movie.mp4", 350), ("document.pdf", 40)]
-speed = 5  # Her saniyede indirilen MB miktarı (5 MB/s)
+# İndirilecek dosyalar (isim, boyut MB)
+files = [("game.zip", 200), ("movie.mp4", 350), ("document.pdf", 40), ("music.mp3", 90)]
+speed = 5  # Her saniyede indirilen MB miktarı
 
 print("\nAutomation system initialized...")  # Otomasyon başlatıldığında bilgi ver
 time.sleep(1)  # Gerçekçi gecikme efekti
 
+# Klasör yapısı (dosya uzantısına göre)
+folders = {
+    "zip": "Archives",
+    "mp4": "Videos",
+    "mp3": "Music",
+    "pdf": "Documents"
+}
+
+# İndirilen dosyaların saklandığı sanal klasör listesi
+downloaded_files = {
+    "Videos": [],
+    "Documents": [],
+    "Music": [],
+    "Archives": []
+}
+
 # Her dosya için indirme işlemi başlat
 for file_name, file_size in files:
     downloaded = 0  # Başlangıçta indirilen miktar sıfır
-    print(f"\n{file_name} download starting ({file_size} MB)...")  # Dosya indirme başlangıcı
-    time.sleep(1)  # Küçük bekleme süresi
+    print(f"\n{file_name} download starting ({file_size} MB)...")
+    time.sleep(1)
 
-    # Kaç saniyede biteceğini hesapla
+    # Adım sayısını hesapla
     steps = file_size // speed
     if file_size % speed != 0:
-        steps += 1  # Tam bölünmezse bir adım daha ekle
+        steps += 1
 
     # Adım adım indirme süreci
     for second in range(1, steps + 1):
-        downloaded = second * speed  # Her saniye 5 MB indiriliyor
+        downloaded = second * speed
         if downloaded > file_size:
-            downloaded = file_size  # Son adımda dosya boyutunu aşma kontrolü
+            downloaded = file_size
 
-        percent = (downloaded / file_size) * 100  # Yüzdelik oranı hesapla
+        percent = (downloaded / file_size) * 100
         print(f"Auto-downloading {file_name}: {downloaded}/{file_size} MB ({percent:.1f}%)")
+        time.sleep(1)
 
-        time.sleep(1)  # 1 saniyelik gerçek zamanlı bekleme
+    print(f"{file_name} download completed successfully!")
+    time.sleep(1)
 
-    print(f"{file_name} download completed successfully!")  # Dosya bittiğinde bilgi ver
-    time.sleep(1)  # Sonraki dosyaya geçmeden önce küçük bekleme
+    # Dosyanın türünü (uzantısını) bul
+    extension = file_name.split(".")[-1]  # Örneğin "movie.mp4" -> "mp4"
+    
+    # Klasör türünü belirle
+    folder_name = folders.get(extension, "Other")  # Eşleşmeyen türler "Other" klasörüne gider
 
-print("\nAll downloads completed. Automation shutting down...")  # Tüm dosyalar tamamlandı
+    # Dosyayı ilgili klasöre taşı (simülasyon)
+    downloaded_files[folder_name].append(file_name)
+    print(f"Automation: {file_name} moved to '{folder_name}' folder.")
+
+time.sleep(1)
+print("\nAll downloads completed and organized by file type:\n")
+
+# Klasörlerin son durumunu ekrana yaz
+for folder, items in downloaded_files.items():
+    print(f"[{folder}] -> {items}")
+
 time.sleep(2)
-print("System powered off automatically.")  # Otomasyon kapatılıyor
+print("\nSystem shutting down automatically...")
+time.sleep(1)
+print("Automation complete.")
