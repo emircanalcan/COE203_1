@@ -23,7 +23,7 @@ def auto_sort_files():
     # 📄 Dosya listesi al
     files = os.listdir(source_folder)
     if not files:
-        print("Kaynak klasör boş. Lütfen 'downloads' klasörüne dosya ekle.")
+        print("The downloads folder is empty. Please add the files to the 'downloads' folder.")
         return
 
     for file_name in files:
@@ -34,7 +34,7 @@ def auto_sort_files():
             ext = os.path.splitext(file_name)[1].lower().replace('.', '')
 
             if ext == "":
-                folder_name = "Bilinmeyen"
+                folder_name = "Unknowns"
             else:
                 folder_name = ext.upper()
 
@@ -47,7 +47,7 @@ def auto_sort_files():
             shutil.move(source_path, destination_path)
             print(f"{file_name} -> {folder_name} klasörüne taşındı.")
 
-    print("\n✅ Tüm dosyalar uzantılarına göre taşındı!")
+    print("\nAll files are moved according to their extensions!")
 
 # 🚀 Programı çalıştır
 auto_sort_files()
