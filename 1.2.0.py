@@ -45,7 +45,7 @@ def auto_sort_files():
             # Taşıma işlemi
             destination_path = os.path.join(destination_folder, file_name)
             shutil.move(source_path, destination_path)
-            print(f"{file_name} -> {folder_name} klasörüne taşındı.")
+            print(f"{file_name} -> {folder_name} moved to folder.")
 
     print("\nAll files are moved according to their extensions!")
 
