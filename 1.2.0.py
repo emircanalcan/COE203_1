@@ -1,51 +1,53 @@
 import os
 import shutil
 
-def move_files_by_type():
+def auto_sort_files():
     """
-    Programın bulunduğu klasördeki dosyaları uzantısına göre alt klasörlere taşır.
-    .txt -> TextFiles
-    .jpg -> ImageFiles
+    Programın bulunduğu klasördeki 'source' klasöründen
+    dosyaları uzantılarına göre otomatik olarak alt klasörlere taşır.
+    Örnek:
+      *.txt -> TXT klasörü
+      *.jpg -> JPG klasörü
+      *.pdf -> PDF klasörü
     """
 
-    # 📁 Programın bulunduğu klasörün yolunu bul
+    # 📁 Programın bulunduğu klasörü bul
     base_folder = os.path.dirname(os.path.abspath(__file__))
 
-    # 📂 Kaynak klasör: programın bulunduğu klasördeki "source" klasörü
-    source_folder = os.path.join(base_folder, "source")
+    # 📂 Kaynak klasör (burada dosyalar olacak)
+    source_folder = os.path.join(base_folder, "downloads")
 
-    # 📂 Hedef klasörler (otomatik olarak program dizininde oluşturulacak)
-    text_folder = os.path.join(base_folder, "TextFiles")
-    image_folder = os.path.join(base_folder, "ImageFiles")
-
-    # 🧱 Eğer klasörler yoksa oluştur
+    # 📂 Klasör yoksa oluştur
     os.makedirs(source_folder, exist_ok=True)
-    os.makedirs(text_folder, exist_ok=True)
-    os.makedirs(image_folder, exist_ok=True)
 
-    # 📄 Kaynak klasördeki dosyaları al
+    # 📄 Dosya listesi al
     files = os.listdir(source_folder)
     if not files:
-        print("Kaynak klasör boş.")
+        print("Kaynak klasör boş. Lütfen 'downloads' klasörüne dosya ekle.")
         return
 
     for file_name in files:
         source_path = os.path.join(source_folder, file_name)
 
-        # Sadece dosyaları al (klasörleri atla)
         if os.path.isfile(source_path):
-            ext = os.path.splitext(file_name)[1].lower()
+            # Uzantıyı al (örn: '.txt' -> 'TXT')
+            ext = os.path.splitext(file_name)[1].lower().replace('.', '')
 
-            if ext == ".txt":
-                shutil.move(source_path, os.path.join(text_folder, file_name))
-                print(f"{file_name} -> TextFiles klasörüne taşındı.")
-            elif ext == ".jpg":
-                shutil.move(source_path, os.path.join(image_folder, file_name))
-                print(f"{file_name} -> ImageFiles klasörüne taşındı.")
+            if ext == "":
+                folder_name = "Bilinmeyen"
             else:
-                print(f"{file_name} atlandı (tanımlı uzantı değil).")
+                folder_name = ext.upper()
 
-    print("\n✅ Tüm dosyalar başarıyla taşındı!")
+            # Hedef klasör
+            destination_folder = os.path.join(base_folder, folder_name)
+            os.makedirs(destination_folder, exist_ok=True)
 
-# 🚀 Programı başlat
-move_files_by_type()
+            # Taşıma işlemi
+            destination_path = os.path.join(destination_folder, file_name)
+            shutil.move(source_path, destination_path)
+            print(f"{file_name} -> {folder_name} klasörüne taşındı.")
+
+    print("\n✅ Tüm dosyalar uzantılarına göre taşındı!")
+
+# 🚀 Programı çalıştır
+auto_sort_files()
