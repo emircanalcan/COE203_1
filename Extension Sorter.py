@@ -1,6 +1,7 @@
+# importing libraries
 import os, shutil, sys
 # define
-def auto_sort_files():
+def extension_sorter():
     # find source file
     if getattr(sys, 'frozen', False):
         base_folder = os.path.dirname(sys.executable)
@@ -36,4 +37,5 @@ def auto_sort_files():
             print(f"{file_name} moved to {folder_name}.")
     print("\nAll files are moved according to their extensions.")
 # run
-auto_sort_files()
+extension_sorter()
+# for .exe: pyinstaller --onefile --noconsole "Extension Sorter.py"
